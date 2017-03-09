@@ -1,4 +1,4 @@
-<project name="name-of-project" default="full-build">
+<project name="mava" default="full-build">
     <!--  By default, we assume all tools to be on the $PATH  -->
     <property name="pdepend" value="pdepend"/>
     <property name="phpcpd" value="phpcpd"/>
@@ -154,7 +154,18 @@
         <property name="phpcpd.done" value="true"/>
     </target>
 
-    <target name="phpunit" unless="phpunit.done" depends="prepare" description="Run unit tests with PHPUnit">
+    <target name="composer-check" depends="prepare">
+        <available file="${composer}" property="composer.present"/>
+    </target>
+
+    <target name="composer-update" depends="composer-check" description="Run composer update">
+        <exec executable="${php}">
+            <arg value="${composer}"/>
+            <arg value="update"/>
+        </exec>
+    </target>
+
+    <target name="phpunit" unless="phpunit.done" depends="prepare, composer-update" description="Run unit tests with PHPUnit">
         <exec executable="${phpunit}" resultproperty="result.phpunit" taskname="phpunit">
             <arg value="--configuration"/>
             <arg path="${basedir}/phpunit.xml"/>
