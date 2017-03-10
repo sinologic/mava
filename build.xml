@@ -155,12 +155,11 @@
     </target>
 
     <target name="composer-check" depends="prepare">
-        <available file="${composer}" property="composer.present"/>
+        <available file="composer" property="composer.present"/>
     </target>
 
     <target name="composer-update" depends="composer-check" description="Run composer update">
-        <exec executable="${php}">
-            <arg value="${composer}"/>
+        <exec executable="composer">
             <arg value="update"/>
         </exec>
     </target>
